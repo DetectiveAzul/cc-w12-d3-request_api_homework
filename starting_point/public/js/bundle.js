@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Handler = __webpack_require__(/*! ./models/handler.js */ \"./src/models/handler.js\");\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\nconst NumberInfoView = __webpack_require__(/*! ./views/number_info_view */ \"./src/views/number_info_view.js\");\n\nconsole.log('JS loaded');\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  //Handler\n  const handler = new Handler();\n  handler.bindEvents();\n  \n  //Form\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n\n  //Info view\n  const numberInfo = document.querySelector('#number-fact');\n  const numberInfoView = new NumberInfoView(numberInfo);\n  numberFormView.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const Handler = __webpack_require__(/*! ./models/handler.js */ \"./src/models/handler.js\");\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\nconst NumberInfoView = __webpack_require__(/*! ./views/number_info_view */ \"./src/views/number_info_view.js\");\n\nconsole.log('JS loaded');\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  //Handler\n  const handler = new Handler();\n  handler.bindEvents();\n\n  //Form\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n\n  //Info view\n  const numberInfo = document.querySelector('#number-fact');\n  const numberInfoView = new NumberInfoView(numberInfo);\n  numberInfoView.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -93,14 +93,25 @@ eval("const PubSub = {\n  publish: function (channel, payload) {\n    const even
 
 /***/ }),
 
+/***/ "./src/helpers/request.js":
+/*!********************************!*\
+  !*** ./src/helpers/request.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const Request = function(url) {\n  this.url = url;\n};\n\nRequest.prototype.get = function(onComplete) {\n  //Initiate the request\n  const xhr = new XMLHttpRequest();\n\n  //Set a listener which trigger once get the response\n  xhr.addEventListener('load', () => {\n    if (xhr.status !== 200) {\n      return;\n    }\n\n    //If we receive a response, store the response on a variable\n    const jsonString = xhr.responseText;\n    //Turn the string into a JS object\n    const data = JSON.parse(jsonString);\n    //Run the callback using the data\n    onComplete(data);\n\n  });\n\n  //Make the request\n  xhr.open('GET', this.url);\n  xhr.setRequestHeader('Accept', 'application/json');\n  xhr.send();\n\n};\n\n\nmodule.exports = Request;\n\n\n//# sourceURL=webpack:///./src/helpers/request.js?");
+
+/***/ }),
+
 /***/ "./src/models/handler.js":
 /*!*******************************!*\
   !*** ./src/models/handler.js ***!
   \*******************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("throw new Error(\"Module parse failed: Unexpected token (24:0)\\nYou may need an appropriate loader to handle this file type.\\n| \\n| module.exports = Handler;\\n| \");\n\n//# sourceURL=webpack:///./src/models/handler.js?");
+eval("const Request = __webpack_require__(/*! ../helpers/request.js */ \"./src/helpers/request.js\")\nconst PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst Handler = function() {\n};\n\nHandler.prototype.bindEvents = function () {\n  PubSub.subscribe('NumberFormView:submit', (evt) => {\n    this.requestToAPI(evt.detail);\n  })\n};\n\nHandler.prototype.requestToAPI = function (number) {\n  request = new Request(`http://numbersapi.com/${number}?json`);\n  request.get((data) => {\n    PubSub.publish('Handler:number-object-ready', data);\n  });\n};\n\n\nmodule.exports = Handler;\n\n\n//# sourceURL=webpack:///./src/models/handler.js?");
 
 /***/ }),
 
@@ -122,7 +133,7 @@ eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/he
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst NumberInfoView = function(container) {\n  this.container = container;\n};\n\nNumberInfoView.prototype.bindEvents = function () {\n  PubSub.subscribe('Handler:number-object-ready', (evt) => {\n    console.log(evt.detail);\n  })\n};\n\nmodule.exports = NumberInfoView;\n\n\n//# sourceURL=webpack:///./src/views/number_info_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst NumberInfoView = function(container) {\n  this.container = container;\n};\n\nNumberInfoView.prototype.bindEvents = function () {\n  PubSub.subscribe('Handler:number-object-ready', (evt) => {\n    this.render(evt.detail);\n  });\n};\n\nNumberInfoView.prototype.render = function(numberObject) {\n  this.container.innerHTML = '';\n  this.renderNumber(numberObject);\n  this.renderNumberFact(numberObject);\n};\n\nNumberInfoView.prototype.renderNumber = function(numberObject) {\n  const line = document.createElement('p');\n  line.classList.add(\"bold\");\n  line.textContent = `Number: ${numberObject.number}`\n  this.container.appendChild(line);\n};\n\nNumberInfoView.prototype.renderNumberFact = function (numberObject) {\n  const line = document.createElement('p');\n  line.classList.add(\"pink\");\n  line.classList.add(\"bold\");\n  line.textContent = `Fact: ${numberObject.text}`\n  this.container.appendChild(line);\n\n};\n\nmodule.exports = NumberInfoView;\n\n\n//# sourceURL=webpack:///./src/views/number_info_view.js?");
 
 /***/ })
 

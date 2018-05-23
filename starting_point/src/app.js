@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //Handler
   const handler = new Handler();
   handler.bindEvents();
-  
+
   //Form
   const numberForm = document.querySelector('form#number-form');
   const numberFormView = new NumberFormView(numberForm);
@@ -17,6 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //Info view
   const numberInfo = document.querySelector('#number-fact');
   const numberInfoView = new NumberInfoView(numberInfo);
-  numberFormView.bindEvents();
+  numberInfoView.bindEvents();
 
 });
