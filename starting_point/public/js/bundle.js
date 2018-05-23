@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("console.log('JS loaded');\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  //Form\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n\n  //Info view\n  const numberInfo = document.querySelector('#number-fact');\n  const numberInfoView = new NumberInfoView(numberInfo);\n  numberFormView.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("const Handler = __webpack_require__(/*! ./models/handler.js */ \"./src/models/handler.js\");\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\nconst NumberInfoView = __webpack_require__(/*! ./views/number_info_view */ \"./src/views/number_info_view.js\");\n\nconsole.log('JS loaded');\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  //Handler\n  const handler = new Handler();\n  handler.bindEvents();\n  \n  //Form\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n\n  //Info view\n  const numberInfo = document.querySelector('#number-fact');\n  const numberInfoView = new NumberInfoView(numberInfo);\n  numberFormView.bindEvents();\n\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -93,6 +93,17 @@ eval("const PubSub = {\n  publish: function (channel, payload) {\n    const even
 
 /***/ }),
 
+/***/ "./src/models/handler.js":
+/*!*******************************!*\
+  !*** ./src/models/handler.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("throw new Error(\"Module parse failed: Unexpected token (24:0)\\nYou may need an appropriate loader to handle this file type.\\n| \\n| module.exports = Handler;\\n| \");\n\n//# sourceURL=webpack:///./src/models/handler.js?");
+
+/***/ }),
+
 /***/ "./src/views/number_form_view.js":
 /*!***************************************!*\
   !*** ./src/views/number_form_view.js ***!
@@ -100,7 +111,18 @@ eval("const PubSub = {\n  publish: function (channel, payload) {\n    const even
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst NumberFormView = function (form) {\n  this.form = form;\n};\n\nNumberFormView.prototype.bindEvents = function () {\n  this.form.addEventListener('submit', (evt) => {\n    this.handleSubmit(evt);\n  })\n};\n\nNumberFormView.prototype.handleSubmit = function (evt) {\n  evt.preventDefault();\n  console.log('Number input on Form', evt.target.number.value);\n  PubSub.publish('NumberFormView:submit', evt.target.number.value);\n};\n\nmodule.exports = NumberFormView;\n\n\n//# sourceURL=webpack:///./src/views/number_form_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst NumberFormView = function (form) {\n  this.form = form;\n};\n\nNumberFormView.prototype.bindEvents = function () {\n  this.form.addEventListener('submit', (evt) => {\n    this.handleSubmit(evt);\n  })\n};\n\nNumberFormView.prototype.handleSubmit = function (evt) {\n  evt.preventDefault();\n  PubSub.publish('NumberFormView:submit', evt.target.number.value);\n};\n\nmodule.exports = NumberFormView;\n\n\n//# sourceURL=webpack:///./src/views/number_form_view.js?");
+
+/***/ }),
+
+/***/ "./src/views/number_info_view.js":
+/*!***************************************!*\
+  !*** ./src/views/number_info_view.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\");\n\nconst NumberInfoView = function(container) {\n  this.container = container;\n};\n\nNumberInfoView.prototype.bindEvents = function () {\n  PubSub.subscribe('Handler:number-object-ready', (evt) => {\n    console.log(evt.detail);\n  })\n};\n\nmodule.exports = NumberInfoView;\n\n\n//# sourceURL=webpack:///./src/views/number_info_view.js?");
 
 /***/ })
 

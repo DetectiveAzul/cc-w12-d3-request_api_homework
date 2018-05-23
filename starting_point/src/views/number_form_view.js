@@ -12,7 +12,6 @@ NumberFormView.prototype.bindEvents = function () {
 
 NumberFormView.prototype.handleSubmit = function (evt) {
   evt.preventDefault();
-  console.log('Number input on Form', evt.target.number.value);
   PubSub.publish('NumberFormView:submit', evt.target.number.value);
 };
 
