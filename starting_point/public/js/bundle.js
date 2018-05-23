@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("console.log('JS loaded');\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
@@ -100,7 +100,7 @@ eval("const PubSub = {\n  publish: function (channel, payload) {\n    const even
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst NumberFormView = function (form) {\n  this.form = form;\n};\n\nNumberFormView.prototype.bindEvents = function () {\n  this.form.addEventListener('submit', (evt) => {\n    this.handleSubmit(evt);\n  })\n};\n\nNumberFormView.prototype.handleSubmit = function (evt) {\n  evt.preventDefault();\n  PubSub.publish('NumberFormView:submit', evt.target.number.value);\n};\n\nmodule.exports = NumberFormView;\n\n\n//# sourceURL=webpack:///./src/views/number_form_view.js?");
+eval("const PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst NumberFormView = function (form) {\n  this.form = form;\n};\n\nNumberFormView.prototype.bindEvents = function () {\n  this.form.addEventListener('submit', (evt) => {\n    this.handleSubmit(evt);\n  })\n};\n\nNumberFormView.prototype.handleSubmit = function (evt) {\n  evt.preventDefault();\n  console.log('Number input on Form', evt.target.number.value);\n  PubSub.publish('NumberFormView:submit', evt.target.number.value);\n};\n\nmodule.exports = NumberFormView;\n\n\n//# sourceURL=webpack:///./src/views/number_form_view.js?");
 
 /***/ })
 

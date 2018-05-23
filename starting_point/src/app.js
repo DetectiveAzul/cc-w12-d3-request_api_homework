@@ -1,3 +1,4 @@
+console.log('JS loaded');
 const NumberFormView = require('./views/number_form_view');
 
 document.addEventListener('DOMContentLoaded', () => {
