@@ -78,7 +78,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("console.log('JS loaded');\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
+eval("console.log('JS loaded');\nconst NumberFormView = __webpack_require__(/*! ./views/number_form_view */ \"./src/views/number_form_view.js\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  //Form\n  const numberForm = document.querySelector('form#number-form');\n  const numberFormView = new NumberFormView(numberForm);\n  numberFormView.bindEvents();\n\n  //Info view\n  const numberInfo = document.querySelector('#number-fact');\n  const numberInfoView = new NumberInfoView(numberInfo);\n  numberFormView.bindEvents();\n});\n\n\n//# sourceURL=webpack:///./src/app.js?");
 
 /***/ }),
 
