@@ -111,7 +111,7 @@ eval("const Request = function(url) {\n  this.url = url;\n};\n\nRequest.prototyp
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Request = __webpack_require__(/*! ../helpers/request.js */ \"./src/helpers/request.js\")\nconst PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst Handler = function() {\n};\n\nHandler.prototype.bindEvents = function () {\n  PubSub.subscribe('NumberFormView:submit', (evt) => {\n    this.requestToAPI(evt.detail);\n  })\n};\n\nHandler.prototype.requestToAPI = function (number) {\n  request = new Request(`http://numbersapi.com/${number}?json`);\n  request.get((data) => {\n    PubSub.publish('Handler:number-object-ready', data);\n  });\n};\n\n\nmodule.exports = Handler;\n\n\n//# sourceURL=webpack:///./src/models/handler.js?");
+eval("const Request = __webpack_require__(/*! ../helpers/request.js */ \"./src/helpers/request.js\")\nconst PubSub = __webpack_require__(/*! ../helpers/pub_sub.js */ \"./src/helpers/pub_sub.js\")\n\nconst Handler = function() {\n};\n\nHandler.prototype.bindEvents = function () {\n  PubSub.subscribe('NumberFormView:submit', (evt) => {\n    this.requestToAPI(evt.detail);\n  })\n};\n\nHandler.prototype.requestToAPI = function (number) {\n  if (!number) return \"\";\n  request = new Request(`http://numbersapi.com/${number}?json`);\n  request.get((data) => {\n    PubSub.publish('Handler:number-object-ready', data);\n  });\n};\n\n\nmodule.exports = Handler;\n\n\n//# sourceURL=webpack:///./src/models/handler.js?");
 
 /***/ }),
 

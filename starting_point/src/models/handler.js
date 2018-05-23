@@ -11,6 +11,7 @@ Handler.prototype.bindEvents = function () {
 };
 
 Handler.prototype.requestToAPI = function (number) {
+  if (!number) return "";
   request = new Request(`http://numbersapi.com/${number}?json`);
   request.get((data) => {
     PubSub.publish('Handler:number-object-ready', data);
